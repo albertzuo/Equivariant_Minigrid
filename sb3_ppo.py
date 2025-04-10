@@ -337,5 +337,5 @@ def make_ppo_agent(env, use_equivariant_cnn, seed, config=None):
     if 'policy_kwargs' in config:
         policy_kwargs.update(config.pop('policy_kwargs'))
     
-    model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, **config)
+    model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
     return model
