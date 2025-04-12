@@ -1,11 +1,7 @@
 import torch
 import torch.nn as nn
-import numpy as np
 import gym
-from typing import Callable, Dict, List, Optional, Tuple, Type, Union
-from gymnasium import spaces
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
-from stable_baselines3.common.policies import ActorCriticPolicy
 import e2cnn.nn as enn
 import e2cnn.gspaces as gspaces
 
@@ -23,7 +19,6 @@ class MinigridFeaturesExtractor(BaseFeaturesExtractor):
             nn.Flatten(),
         )
 
-        # Compute shape by doing one forward pass
         with torch.no_grad():
             n_flatten = self.cnn(torch.as_tensor(observation_space.sample()[None]).float()).shape[1]
 
@@ -70,7 +65,19 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1,
                            frequencies_cutoff=2.0),
-                enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]))
+                enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr])),
+                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)  # Added max-pooling
+            ),
+            
+            # Third equivariant convolution layer
+            enn.SequentialModule(
+                enn.R2Conv(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
+                           enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]),
+                           kernel_size=3, 
+                           padding=1, 
+                           stride=1,
+                           frequencies_cutoff=2.0),
+                enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]))
             )
         )
         
