@@ -10,7 +10,7 @@ class BaseWrapper(gym.ObservationWrapper):
         super().__init__(env)
         self.observation_space = env.observation_space
     def observation(self, obs):
-        return obs
+        return obs / 255.0
 
 class RandomRotateWrapper(gym.ObservationWrapper):
     def __init__(self, env, subset=[0,1,2,3]):
@@ -28,7 +28,7 @@ class RandomRotateWrapper(gym.ObservationWrapper):
 
     def observation(self, obs):
         img_rot = np.rot90(obs, k=self.k, axes=(0,1)).copy()
-        return img_rot
+        return img_rot / 255.0
 
 class Rotate90Wrapper(gym.ObservationWrapper):
     def __init__(self, env):
@@ -38,7 +38,7 @@ class Rotate90Wrapper(gym.ObservationWrapper):
         self.observation_space = env.observation_space
     def observation(self, obs):
         img_rot = np.rot90(obs, k=1, axes=(0,1)).copy()
-        return img_rot
+        return img_rot / 255.0
 
 class Rotate180Wrapper(gym.ObservationWrapper):
     def __init__(self, env):
@@ -48,7 +48,7 @@ class Rotate180Wrapper(gym.ObservationWrapper):
         self.observation_space = env.observation_space
     def observation(self, obs):
         img_rot = np.rot90(obs, k=2, axes=(0,1)).copy()
-        return img_rot
+        return img_rot / 255.0
 
 class Rotate270Wrapper(gym.ObservationWrapper):
     def __init__(self, env):
@@ -58,4 +58,4 @@ class Rotate270Wrapper(gym.ObservationWrapper):
         self.observation_space = env.observation_space
     def observation(self, obs):
         img_rot = np.rot90(obs, k=3, axes=(0,1)).copy()
-        return img_rot
+        return img_rot / 255.0
