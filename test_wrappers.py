@@ -31,7 +31,7 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
             print(expected_obs)
             print('--'*20)
             print(wrapped_obs)
-        assert np.allclose(wrapped_obs, expected_obs, atol=1e-5), f"{wrapper_class.__name__} rotation mismatch"
+        assert np.allclose(wrapped_obs, expected_obs), f"{wrapper_class.__name__} rotation mismatch"
 
 def test_rotate90_wrapper_rotation():
     test_wrapper_base(Rotate90Wrapper, k=1)
