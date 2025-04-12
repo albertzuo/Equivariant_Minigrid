@@ -94,10 +94,8 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         )
     
     def forward(self, observations):
-        device = observations.device
-        input_type = enn.FieldType(self.r2_act, self.input_type.representations).to(device)
-
-        x = enn.GeometricTensor(observations, input_type)
+        device = next(self.parameters()).device
+        x = enn.GeometricTensor(observations.to(device), self.input_type)
         x = self.equivariant_model(x)
-        x = x.tensor.reshape(x.tensor.size(0), -1)
+        x = x.tensor.view(x.tensor.size(0), -1)
         return self.fc(x)
