@@ -81,14 +81,12 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
             )
         )
         
-        # Calculate the size of the flattened features
         sample = torch.randn(1, *observation_space.shape)
         with torch.no_grad():
             geometric_input = enn.GeometricTensor(sample, self.input_type)
             output = self.equivariant_model(geometric_input)
             flattened_size = output.tensor.reshape(1, -1).shape[1]
         
-        # Project down to the desired feature dimension
         self.fc = nn.Sequential(
             nn.Flatten(),
             nn.Linear(flattened_size, features_dim),
@@ -96,8 +94,10 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         )
     
     def forward(self, observations):
-        """Forward pass through the small kernel C4-equivariant network"""
-        x = enn.GeometricTensor(observations, self.input_type)
+        device = observations.device
+        input_type = enn.FieldType(self.r2_act, self.input_type.representations).to(device)
+
+        x = enn.GeometricTensor(observations, input_type)
         x = self.equivariant_model(x)
         x = x.tensor.reshape(x.tensor.size(0), -1)
         return self.fc(x)
