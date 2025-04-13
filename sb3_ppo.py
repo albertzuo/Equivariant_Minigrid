@@ -319,7 +319,7 @@ class PPO(OnPolicyAlgorithm):
             progress_bar=progress_bar,
         )
 
-def make_ppo_agent(env, use_equivariant_cnn, seed, config=None):
+def make_ppo_agent(env, use_equivariant_cnn, seed, config=None, load=None):
     if config is None:
         config = {}
         
@@ -337,5 +337,9 @@ def make_ppo_agent(env, use_equivariant_cnn, seed, config=None):
     if 'policy_kwargs' in config:
         policy_kwargs.update(config.pop('policy_kwargs'))
     
-    model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
+    if load is not None:
+        print('Loading model from', load)
+        model = PPO.load(load, env=env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
+    else:
+        model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
     return model
