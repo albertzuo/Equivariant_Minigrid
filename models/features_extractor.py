@@ -97,5 +97,5 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         device = next(self.parameters()).device
         x = enn.GeometricTensor(observations.to(device), self.input_type)
         x = self.equivariant_model(x)
-        x = x.tensor.view(x.tensor.size(0), -1)
+        x = x.tensor.reshape(x.tensor.size(0), -1)
         return self.fc(x)
