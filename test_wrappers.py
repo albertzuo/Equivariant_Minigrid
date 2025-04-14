@@ -55,7 +55,7 @@ def test_observation_normalization(wrapper_class, **kwargs):
     obs, _ = wrapped_env.reset()
     assert np.all(obs >= 0.0) and np.all(obs <= 1.0), f"{wrapper_class.__name__} failed normalization test"
 
-def test_wrappers():
+def test_wrappers_normalization():
     test_observation_normalization(BaseWrapper)
     test_observation_normalization(RandomRotateWrapper, subset=[0, 1, 2, 3])
     test_observation_normalization(Rotate90Wrapper)
@@ -66,6 +66,6 @@ if __name__ == "__main__":
     test_rotate90_wrapper_rotation()
     test_rotate180_wrapper_rotation()
     test_rotate270_wrapper_rotation()
-    # test_wrappers()
+    # test_wrappers_normalization()
     print("All rotation tests passed!")
     print("All tests passed!")

@@ -2,7 +2,7 @@ import numpy as np
 import gymnasium as gym
 from gymnasium import ActionWrapper
 from gymnasium.spaces import Discrete
-from minigrid.wrappers import FullyObsWrapper
+from minigrid.wrappers import FullyObsWrapper, PositionBonus
 
 class LimitedActionWrapper(ActionWrapper):
     def __init__(self, env, allowed_actions):
@@ -14,11 +14,13 @@ class LimitedActionWrapper(ActionWrapper):
         return self.allowed_actions[act]
 
 class _MiniGridWrapperBase(gym.ObservationWrapper):
-    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2]):
+    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2], add_intrinsic=True):
         if full_obs:
             env = FullyObsWrapper(env)
         if allowed_actions:
             env = LimitedActionWrapper(env, allowed_actions=allowed_actions)
+        if add_intrinsic:
+            env = PositionBonus(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
 
