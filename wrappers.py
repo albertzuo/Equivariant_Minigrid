@@ -14,7 +14,7 @@ class LimitedActionWrapper(ActionWrapper):
         return self.allowed_actions[act]
 
 class _MiniGridWrapperBase(gym.ObservationWrapper):
-    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2], add_intrinsic=True):
+    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2], add_intrinsic=False):
         if full_obs:
             env = FullyObsWrapper(env)
         if allowed_actions:
