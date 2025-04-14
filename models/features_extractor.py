@@ -10,11 +10,13 @@ class MinigridFeaturesExtractor(BaseFeaturesExtractor):
         super().__init__(observation_space, features_dim)
         n_input_channels = observation_space.shape[0]
         self.cnn = nn.Sequential(
-            nn.Conv2d(n_input_channels, 16, (3, 3)),
+            nn.Conv2d(n_input_channels, 32, (3, 3), padding=1),
             nn.ReLU(),
-            nn.Conv2d(16, 32, (3, 3)),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(32, 64, (3, 3), padding=1),
             nn.ReLU(),
-            nn.Conv2d(32, 64, (3, 3)),
+            nn.MaxPool2d(2, 2),
+            nn.Conv2d(64, 128, (3, 3), padding=1),
             nn.ReLU(),
             nn.Flatten(),
         )
@@ -28,10 +30,7 @@ class MinigridFeaturesExtractor(BaseFeaturesExtractor):
         return self.linear(self.cnn(observations))
 
 class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
-    """
-    C4 Equivariant CNN with small kernels suitable for MiniGrid's small observation spaces.
-    """
-    def __init__(self, observation_space, features_dim=256):
+    def __init__(self, observation_space, features_dim=512):
         super().__init__(observation_space, features_dim)
         
         # Define the group structure (C4 = 90-degree rotations)
@@ -72,12 +71,12 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
             # Third equivariant convolution layer
             enn.SequentialModule(
                 enn.R2Conv(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
-                           enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]),
+                           enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
                            kernel_size=3, 
                            padding=1, 
                            stride=1,
                            frequencies_cutoff=2.0),
-                enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]))
+                enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]))
             )
         )
         
