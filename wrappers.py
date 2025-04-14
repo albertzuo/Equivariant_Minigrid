@@ -1,24 +1,20 @@
 import numpy as np
 import gymnasium as gym
-from minigrid.wrappers import RGBImgObsWrapper, RGBImgPartialObsWrapper
+from minigrid.wrappers import FullyObsWrapper
 
 class BaseWrapper(gym.ObservationWrapper):
     def __init__(self, env, full_obs=True):
         if full_obs:
-            env = RGBImgObsWrapper(env)
-        else:
-            env = RGBImgPartialObsWrapper(env)
+            env = FullyObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
     def observation(self, obs):
-        return obs['image'] / 255.0
+        return obs['image']
 
 class RandomRotateWrapper(gym.ObservationWrapper):
     def __init__(self, env, subset=[0,1,2,3], full_obs=True):
         if full_obs:
-            env = RGBImgObsWrapper(env)
-        else:
-            env = RGBImgPartialObsWrapper(env)
+            env = FullyObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
         self.subset = subset
@@ -32,43 +28,37 @@ class RandomRotateWrapper(gym.ObservationWrapper):
     def observation(self, obs):
         obs = obs['image']
         img_rot = np.rot90(obs, k=self.k, axes=(0,1)).copy()
-        return img_rot / 255.0
+        return img_rot
 
 class Rotate90Wrapper(gym.ObservationWrapper):
     def __init__(self, env, full_obs=True):
         if full_obs:
-            env = RGBImgObsWrapper(env)
-        else:
-            env = RGBImgPartialObsWrapper(env)
+            env = FullyObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
     def observation(self, obs):
         obs = obs['image']
         img_rot = np.rot90(obs, k=1, axes=(0,1)).copy()
-        return img_rot / 255.0
+        return img_rot
 
 class Rotate180Wrapper(gym.ObservationWrapper):
     def __init__(self, env, full_obs=True):
         if full_obs:
-            env = RGBImgObsWrapper(env)
-        else:
-            env = RGBImgPartialObsWrapper(env)
+            env = FullyObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
     def observation(self, obs):
         obs = obs['image']
         img_rot = np.rot90(obs, k=2, axes=(0,1)).copy()
-        return img_rot / 255.0
+        return img_rot
 
 class Rotate270Wrapper(gym.ObservationWrapper):
     def __init__(self, env, full_obs=True):
         if full_obs:
-            env = RGBImgObsWrapper(env)
-        else:
-            env = RGBImgPartialObsWrapper(env)
+            env = FullyObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
     def observation(self, obs):
         obs = obs['image']
         img_rot = np.rot90(obs, k=3, axes=(0,1)).copy()
-        return img_rot / 255.0
+        return img_rot
