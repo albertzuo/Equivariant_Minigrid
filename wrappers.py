@@ -3,9 +3,10 @@ import gymnasium as gym
 from minigrid.wrappers import ImgObsWrapper, FullyObsWrapper
 
 class BaseWrapper(gym.ObservationWrapper):
-    def __init__(self, env):
+    def __init__(self, env, full_obs=False):
         super().__init__(env)
-        # env = FullyObsWrapper(env)
+        if full_obs:
+            env = FullyObsWrapper(env)
         env = ImgObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space
@@ -13,8 +14,10 @@ class BaseWrapper(gym.ObservationWrapper):
         return obs
 
 class RandomRotateWrapper(gym.ObservationWrapper):
-    def __init__(self, env, subset=[0,1,2,3]):
-        # env = FullyObsWrapper(env)
+    def __init__(self, env, subset=[0,1,2,3], full_obs=False):
+        super().__init__(env)
+        if full_obs:
+            env = FullyObsWrapper(env)
         env = ImgObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space
@@ -31,8 +34,10 @@ class RandomRotateWrapper(gym.ObservationWrapper):
         return img_rot
 
 class Rotate90Wrapper(gym.ObservationWrapper):
-    def __init__(self, env):
-        # env = FullyObsWrapper(env)
+    def __init__(self, env, full_obs=False):
+        super().__init__(env)
+        if full_obs:
+            env = FullyObsWrapper(env)
         env = ImgObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space
@@ -41,8 +46,10 @@ class Rotate90Wrapper(gym.ObservationWrapper):
         return img_rot
 
 class Rotate180Wrapper(gym.ObservationWrapper):
-    def __init__(self, env):
-        # env = FullyObsWrapper(env)
+    def __init__(self, env, full_obs=False):
+        super().__init__(env)
+        if full_obs:
+            env = FullyObsWrapper(env)
         env = ImgObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space
@@ -51,8 +58,10 @@ class Rotate180Wrapper(gym.ObservationWrapper):
         return img_rot
 
 class Rotate270Wrapper(gym.ObservationWrapper):
-    def __init__(self, env):
-        # env = FullyObsWrapper(env)
+    def __init__(self, env, full_obs=False):
+        super().__init__(env)
+        if full_obs:
+            env = FullyObsWrapper(env)
         env = ImgObsWrapper(env)
         super().__init__(env)
         self.observation_space = env.observation_space
