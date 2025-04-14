@@ -6,7 +6,7 @@ import e2cnn.nn as enn
 import e2cnn.gspaces as gspaces
 
 class MinigridFeaturesExtractor(BaseFeaturesExtractor):
-    def __init__(self, observation_space: gym.Space, features_dim: int = 512, normalized_image: bool = False) -> None:
+    def __init__(self, observation_space: gym.Space, features_dim: int = 256, normalized_image: bool = False) -> None:
         super().__init__(observation_space, features_dim)
         n_input_channels = observation_space.shape[0]
         self.cnn = nn.Sequential(
@@ -30,7 +30,7 @@ class MinigridFeaturesExtractor(BaseFeaturesExtractor):
         return self.linear(self.cnn(observations))
 
 class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
-    def __init__(self, observation_space, features_dim=512):
+    def __init__(self, observation_space, features_dim=256):
         super().__init__(observation_space, features_dim)
         
         # Define the group structure (C4 = 90-degree rotations)
@@ -56,7 +56,6 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                 enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 16 * [self.r2_act.regular_repr]), 2)
             ),
             
-            # Second equivariant convolution layer - increased kernel from 2x2 to 3x3 and added frequencies_cutoff
             enn.SequentialModule(
                 enn.R2Conv(enn.FieldType(self.r2_act, 16 * [self.r2_act.regular_repr]),
                            enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
@@ -65,10 +64,9 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            stride=1,
                            frequencies_cutoff=2.0),
                 enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr])),
-                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)  # Added max-pooling
+                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)
             ),
             
-            # Third equivariant convolution layer
             enn.SequentialModule(
                 enn.R2Conv(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
                            enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
