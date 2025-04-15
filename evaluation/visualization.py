@@ -4,8 +4,6 @@ from IPython.display import HTML
 
 def create_animation(frames):
     """Create animation from frames."""
-    plt.figure(figsize=(8, 8))
-    plt.axis('off')
     
     fig = plt.figure(figsize=(5, 5))
     im = plt.imshow(frames[0])
@@ -16,7 +14,7 @@ def create_animation(frames):
         return [im]
     
     anim = animation.FuncAnimation(fig, animate, frames=len(frames), interval=200, blit=True)
-    plt.close()
+    plt.close(fig)
     return HTML(anim.to_jshtml())
 
 def plot_parameter_comparison(custom_params, sb3_params):
