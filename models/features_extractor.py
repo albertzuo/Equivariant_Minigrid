@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import gym
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
-import e2cnn.nn as enn
-import e2cnn.gspaces as gspaces
+import escnn.nn as enn
+import escnn.gspaces as gspaces
 
 class MinigridFeaturesExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: gym.Space, features_dim: int = 256, normalized_image: bool = False) -> None:
@@ -34,7 +34,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         super().__init__(observation_space, features_dim)
         
         # Define the group structure (C4 = 90-degree rotations)
-        self.r2_act = gspaces.Rot2dOnR2(N=4)
+        self.r2_act = gspaces.rot2dOnR2(N=4)
         
         # Get input shape
         n_input_channels = observation_space.shape[0]
