@@ -3,6 +3,7 @@ from typing import Any, ClassVar, Optional, TypeVar, Union
 
 import numpy as np
 import torch as th
+import tensorboard
 from gymnasium import spaces
 from torch.nn import functional as F
 
@@ -319,7 +320,7 @@ class PPO(OnPolicyAlgorithm):
             progress_bar=progress_bar,
         )
 
-def make_ppo_agent(env, use_equivariant_cnn, seed, config=None, load=None):
+def make_ppo_agent(env, use_equivariant_cnn, seed, config=None, load=None, tensorboard_log=None):
     if config is None:
         config = {}
         
@@ -341,7 +342,7 @@ def make_ppo_agent(env, use_equivariant_cnn, seed, config=None, load=None):
     
     if load is not None:
         print('Loading model from', load)
-        model = PPO.load(load, env=env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
+        model = PPO.load(load, env=env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', tensorboard_log=tensorboard_log, **config)
     else:
-        model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', **config)
+        model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, seed=seed, verbose=1, device='auto', tensorboard_log=tensorboard_log, **config)
     return model

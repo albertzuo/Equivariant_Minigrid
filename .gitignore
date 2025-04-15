@@ -19,6 +19,7 @@ include/
 lib/
 lib64/
 logs/
+tensorboard_logs/
 parts/
 sdist/
 share/
