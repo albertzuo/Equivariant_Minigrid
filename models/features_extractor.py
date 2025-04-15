@@ -69,12 +69,12 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
             
             enn.SequentialModule(
                 enn.R2Conv(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
-                           enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]),
+                           enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
                            kernel_size=3, 
                            padding=1, 
                            stride=1,
                            frequencies_cutoff=2.0),
-                enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]))
+                enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]))
             )
         )
         
