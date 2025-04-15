@@ -327,11 +327,13 @@ def make_ppo_agent(env, use_equivariant_cnn, seed, config=None, load=None):
         policy_kwargs = dict(
             features_extractor_class=SmallKernelC4EquivariantCNN,
             features_extractor_kwargs=dict(features_dim=256),
+            normalize_images=False,
         )
     else:
         policy_kwargs = dict(
             features_extractor_class=MinigridFeaturesExtractor,
             features_extractor_kwargs=dict(features_dim=256),
+            normalize_images=False,
         )
     
     if 'policy_kwargs' in config:
