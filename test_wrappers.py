@@ -1,6 +1,6 @@
 import numpy as np
 import gymnasium as gym
-from wrappers import Rotate90Wrapper, Rotate180Wrapper, Rotate270Wrapper, BaseWrapper, RandomRotateWrapper
+from wrappers import Rotate90Wrapper, Rotate180Wrapper, Rotate270Wrapper, BaseWrapper, RandomRotateWrapper, OneHotObsWrapper, TransposeImageWrapper
 from minigrid.wrappers import FullyObsWrapper
 
 def test_wrapper_base(wrapper_class, k=0, debug=False):
@@ -9,6 +9,8 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
     env = gym.make(env_id)
     
     base_env = FullyObsWrapper(env)
+    base_env = OneHotObsWrapper(base_env)
+    base_env = TransposeImageWrapper(base_env)
     obs, _ = base_env.reset(seed=seed)
     obs = obs['image']
     expected_obs = np.rot90(obs, k=k, axes=(0, 1))
