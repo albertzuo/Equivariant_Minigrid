@@ -78,8 +78,8 @@ class _MiniGridWrapperBase(gym.ObservationWrapper):
     def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2], add_intrinsic=False):
         if full_obs:
             env = FullyObsWrapper(env)
-            env = OneHotObsWrapper(env)
-            env = TransposeImageWrapper(env)
+            # env = OneHotObsWrapper(env)
+            # env = TransposeImageWrapper(env)
         if allowed_actions:
             env = LimitedActionWrapper(env, allowed_actions=allowed_actions)
         if add_intrinsic:
