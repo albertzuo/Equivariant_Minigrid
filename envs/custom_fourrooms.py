@@ -121,7 +121,7 @@ class FourRoomsEnv(MiniGridEnv):
             self.agent_pos = self._agent_default_pos
             self.grid.set(*self._agent_default_pos, None)
             # assuming random start direction
-            self.agent_dir = self._rand_int(0, 4)
+            self.agent_dir = 1#self._rand_int(0, 4)
         else:
             self.place_agent()
 
@@ -137,22 +137,27 @@ class FourRoomsEnv(MiniGridEnv):
 
 class FourRoomsEnv17(FourRoomsEnv):
     def __init__(self, **kwargs):
-        super().__init__(size=17, **kwargs)
+        size = 17
+        super().__init__(size=size, agent_pos=(1,1), goal_pos=(size-2, size-2), **kwargs)
 
 
 class FourRoomsEnv15(FourRoomsEnv):
     def __init__(self, **kwargs):
-        super().__init__(size=15, **kwargs)
+        size = 15
+        super().__init__(size=size, agent_pos=(1,1), goal_pos=(size-2, size-2), **kwargs)
 
 
 class FourRoomsEnv13(FourRoomsEnv):
     def __init__(self, **kwargs):
-        super().__init__(size=13, **kwargs)
+        size = 13
+        super().__init__(size=size, agent_pos=(1,1), goal_pos=(size-2, size-2), **kwargs)
 
 class FourRoomsEnv11(FourRoomsEnv):
     def __init__(self, **kwargs):
-        super().__init__(size=11, **kwargs)
+        size = 11
+        super().__init__(size=size, agent_pos=(1,1), goal_pos=(size-2, size-2), **kwargs)
 
 class FourRoomsEnv09(FourRoomsEnv):
     def __init__(self, **kwargs):
-        super().__init__(size=9, **kwargs)
+        size = 9
+        super().__init__(size=size, agent_pos=(1,1), goal_pos=(size-2, size-2), **kwargs)

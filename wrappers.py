@@ -2,7 +2,7 @@ import numpy as np
 import gymnasium as gym
 from gymnasium import ActionWrapper, ObservationWrapper, spaces
 from gymnasium.spaces import Discrete
-from minigrid.wrappers import FullyObsWrapper, PositionBonus
+from minigrid.wrappers import FullyObsWrapper
 from minigrid.core.constants import COLOR_TO_IDX, OBJECT_TO_IDX, STATE_TO_IDX
 
 class LimitedActionWrapper(ActionWrapper):
@@ -75,17 +75,16 @@ class TransposeImageWrapper(gym.ObservationWrapper):
         return obs
 
 class _MiniGridWrapperBase(gym.ObservationWrapper):
-    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2], add_intrinsic=False):
+    def __init__(self, env, full_obs=True, allowed_actions=[0, 1, 2]):
         if full_obs:
             env = FullyObsWrapper(env)
             # env = OneHotObsWrapper(env)
             # env = TransposeImageWrapper(env)
         if allowed_actions:
             env = LimitedActionWrapper(env, allowed_actions=allowed_actions)
-        if add_intrinsic:
-            env = PositionBonus(env)
         super().__init__(env)
         self.observation_space = env.observation_space.spaces['image']
+        
 
 class BaseWrapper(_MiniGridWrapperBase):
     def __init__(self, env, full_obs=True):
