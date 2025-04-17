@@ -43,15 +43,14 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         self.input_type = enn.FieldType(self.r2_act, n_input_channels * [self.r2_act.trivial_repr])
         
         # Define the sequence of equivariant layers with SMALLER kernels
-        self.equivariant_model = nn.Sequential(
+        self.equivariant_model = enn.SequentialModule(
             # First equivariant convolution layer - kernel 3x3 (instead of 5x5)
             enn.SequentialModule(
                 enn.R2Conv(self.input_type, 
                            enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
                            kernel_size=3, 
                            padding=1, 
-                           stride=1,
-                           frequencies_cutoff=2.0),
+                           stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr])),
                 enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)
             ),
@@ -61,8 +60,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]),
                            kernel_size=3, 
                            padding=1, 
-                           stride=1,
-                           frequencies_cutoff=2.0),
+                           stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
                 enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
             ),
@@ -72,24 +70,17 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]),
                            kernel_size=3, 
                            padding=1, 
-                           stride=1,
-                           frequencies_cutoff=2.0),
-                enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]))
+                           stride=1),
+                enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
+                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
             )
         )
         
         self.group_pool = enn.GroupPooling(self.equivariant_model[-1].out_type)
-        cur_device = next(self.parameters()).device
-        sample = torch.randn(1, *observation_space.shape, device=cur_device)
-        with torch.no_grad():
-            x = enn.GeometricTensor(sample, self.input_type)
-            x = self.equivariant_model(x)
-            x = self.group_pool(x)
-            flattened_size = x.tensor.reshape(1, -1).shape[1]
         
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(flattened_size, features_dim),
+            nn.Linear(self.group_pool.out_type.size, features_dim),
             nn.ReLU()
         )
     

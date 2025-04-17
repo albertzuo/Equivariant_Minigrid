@@ -22,7 +22,7 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
     # base_env = TransposeImageWrapper(base_env)
     obs, _ = base_env.reset(seed=seed)
     obs = obs['image']
-    expected_obs = np.rot90(obs, k=k, axes=(0, 1))
+    expected_obs = np.rot90(obs, k=k, axes=(0, 1)).copy()
 
     env2 = make_starting_env()
     wrapped_env = wrapper_class(env2)
@@ -39,7 +39,7 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
         _ = base_env.reset()
         obs, _, _, _, _ = base_env.step(action)
         obs = obs['image']
-        expected_obs = np.rot90(obs, k=k, axes=(0, 1))
+        expected_obs = np.rot90(obs, k=k, axes=(0, 1)).copy()
 
         _ = wrapped_env.reset()
         wrapped_obs, _, _, _, _ = wrapped_env.step(action)
