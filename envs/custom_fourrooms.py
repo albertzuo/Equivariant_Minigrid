@@ -8,6 +8,9 @@ from minigrid.minigrid_env import MiniGridEnv
 
 class FourRoomsEnv(MiniGridEnv):
     """
+    This is taken from the original `minigrid` package, but with some modifications to
+    the size of the rooms and the agent's starting position.
+    The original code can be found at: https://github.com/Farama-Foundation/Minigrid/blob/master/minigrid/envs/fourrooms.py 
     ## Description
 
     Classic four room reinforcement learning environment. The agent must

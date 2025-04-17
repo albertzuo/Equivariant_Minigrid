@@ -1,6 +1,6 @@
 import numpy as np
 import gymnasium as gym
-from wrappers import Rotate90Wrapper, Rotate180Wrapper, Rotate270Wrapper, BaseWrapper, RandomRotateWrapper, OneHotObsWrapper, TransposeImageWrapper
+from wrappers import Rotate90Wrapper, Rotate180Wrapper, Rotate270Wrapper, BaseWrapper, RandomRotateWrapper
 from minigrid.wrappers import FullyObsWrapper
 from envs.custom_fourrooms import FourRoomsEnv17, FourRoomsEnv15, FourRoomsEnv13
 
@@ -18,8 +18,6 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
     env = make_starting_env()
     
     base_env = FullyObsWrapper(env)
-    # base_env = OneHotObsWrapper(base_env)
-    # base_env = TransposeImageWrapper(base_env)
     obs, _ = base_env.reset(seed=seed)
     obs = obs['image']
     expected_obs = np.rot90(obs, k=k, axes=(0, 1)).copy()
@@ -31,7 +29,6 @@ def test_wrapper_base(wrapper_class, k=0, debug=False):
         print(expected_obs.shape)
         print('--'*20)
         print(wrapped_obs.shape)
-        # print(wrapped_obs, expected_obs)
     assert np.allclose(wrapped_obs, expected_obs), f"{wrapper_class.__name__} initial observation mismatch"
     for i in range(10):
         action = wrapped_env.action_space.sample()
