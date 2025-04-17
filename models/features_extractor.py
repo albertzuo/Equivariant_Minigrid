@@ -33,18 +33,12 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
     def __init__(self, observation_space, features_dim=256):
         super().__init__(observation_space, features_dim)
         
-        # Define the group structure (C4 = 90-degree rotations)
         self.r2_act = gspaces.rot2dOnR2(N=4)
         
-        # Get input shape
-        n_input_channels = observation_space.shape[0]
-        
-        # Convert standard channel dimension to a group feature field
+        n_input_channels = observation_space.shape[0]        
         self.input_type = enn.FieldType(self.r2_act, n_input_channels * [self.r2_act.trivial_repr])
         
-        # Define the sequence of equivariant layers with SMALLER kernels
         self.equivariant_model = enn.SequentialModule(
-            # First equivariant convolution layer - kernel 3x3 (instead of 5x5)
             enn.SequentialModule(
                 enn.R2Conv(self.input_type, 
                            enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]),
@@ -52,7 +46,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr])),
-                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)
+                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)
             ),
             
             enn.SequentialModule(
@@ -62,7 +56,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
-                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
+                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
             ),
             
             enn.SequentialModule(
@@ -72,7 +66,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
-                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
+                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
             )
         )
         
@@ -89,5 +83,6 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
         x = enn.GeometricTensor(observations.to(device), self.input_type)
         x = self.equivariant_model(x)
         x = self.group_pool(x)
-        x = x.tensor.reshape(x.tensor.shape[0], -1)
-        return self.fc(x)
+        x = x.tensor
+        x = self.fc(x.reshape(x.shape[0], -1))
+        return x

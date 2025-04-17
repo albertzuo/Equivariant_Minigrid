@@ -102,7 +102,7 @@ class RandomRotateWrapper(_MiniGridWrapperBase):
         self.k = np.random.choice(self.subset)
         return self.observation(obs), info
     def observation(self, obs):
-        obs_img = obs['image'] 
+        obs_img = obs['image']
         img_rot = np.rot90(obs_img, k=self.k, axes=(0,1)).copy()
         return img_rot
 
