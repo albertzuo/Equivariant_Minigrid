@@ -46,7 +46,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr])),
-                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 2)
+                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 32 * [self.r2_act.regular_repr]), 3)
             ),
             
             enn.SequentialModule(
@@ -56,7 +56,7 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
-                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
+                enn.PointwiseMaxPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 3)
             ),
             
             enn.SequentialModule(
@@ -66,7 +66,6 @@ class SmallKernelC4EquivariantCNN(BaseFeaturesExtractor):
                            padding=1, 
                            stride=1),
                 enn.ReLU(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr])),
-                enn.PointwiseAvgPool(enn.FieldType(self.r2_act, 64 * [self.r2_act.regular_repr]), 2)
             )
         )
         
