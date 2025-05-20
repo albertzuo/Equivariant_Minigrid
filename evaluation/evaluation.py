@@ -189,7 +189,7 @@ def capture_side_by_side_comparison(models, envs, labels, num_steps=50, rotation
         height, width = frames[0].shape[:2]
         
         # Create video writer
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        fourcc = cv2.VideoWriter_fourcc(*'avc1')
         out = cv2.VideoWriter(str(output_path), fourcc, fps, (width, height))
         
         # Write frames to video
