@@ -33,9 +33,7 @@ These findings highlight that architectural inductive biases, such as equivarian
 
 
 
-
-https://github.com/user-attachments/assets/2977a128-36bc-4889-bcd0-4f99a4e76cd9
-
+https://github.com/user-attachments/assets/1c3115c1-0fad-4fc7-b05d-e7d2d0c8cf24
 
 
 
@@ -43,9 +41,7 @@ https://github.com/user-attachments/assets/2977a128-36bc-4889-bcd0-4f99a4e76cd9
 
 
 
-
-https://github.com/user-attachments/assets/bfe4f460-c2da-491f-a398-b98b34e29a93
-
+https://github.com/user-attachments/assets/1c0ac1f8-cbdd-42b9-98d6-86db6f50d343
 
 
 
@@ -53,9 +49,7 @@ https://github.com/user-attachments/assets/bfe4f460-c2da-491f-a398-b98b34e29a93
 
 
 
-https://github.com/user-attachments/assets/a6eba20d-3e78-4051-bb46-eda2178d60c8
-
-
+https://github.com/user-attachments/assets/1b0f0450-55ab-4783-8566-23c2516c1fdc
 
 
 
@@ -64,7 +58,7 @@ https://github.com/user-attachments/assets/a6eba20d-3e78-4051-bb46-eda2178d60c8
 
 
 
-<V
+https://github.com/user-attachments/assets/d8773c82-acb1-4080-bcb7-4ee5feef42df
 
 
 
