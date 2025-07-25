@@ -1,39 +1,10 @@
-import torch
 import numpy as np
 import cv2
 from pathlib import Path
-
-def evaluate_agent(agent, env, num_episodes=5, render=True, max_steps=100):
-    """Evaluate the agent and optionally render frames."""
-    all_rewards = []
-    all_frames = []
-    
-    for episode in range(num_episodes):
-        episode_rewards = 0
-        frames = []
-        obs, info = env.reset()
-        done = False
-        step_count = 0
-        
-        while not done and step_count < max_steps:
-            if render:
-                frames.append(env.render())
-                
-            with torch.no_grad():
-                state = torch.tensor(obs.flatten(), dtype=torch.float32)
-                policy, _ = agent(state)
-                action = torch.multinomial(policy, 1).item()
-            
-            obs, reward, terminated, truncated, info = env.step(action)
-            done = terminated or truncated
-            episode_rewards += reward
-            step_count += 1
-        
-        all_rewards.append(episode_rewards)
-        if render:
-            all_frames.append(frames)
-    
-    return all_rewards, all_frames
+import matplotlib.pyplot as plt
+from matplotlib import animation
+from IPython.display import HTML
+import os
 
 def capture_frames_sb3(model, env, num_steps=100, rotation=0):
     """
@@ -201,5 +172,28 @@ def capture_side_by_side_comparison(models, envs, labels, num_steps=50, rotation
     
     return frames
 
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+def create_animation(frames, save_path=None):
+    """
+    Create animation from frames.
+    Args:
+        frames: List of frames to animate
+        save_path: Optional path to save the animation as MP4
+    """
+    fig = plt.figure(figsize=(5, 5))
+    im = plt.imshow(frames[0])
+    plt.axis('off')
+    
+    def animate(i):
+        im.set_array(frames[i])
+        return [im]
+    
+    anim = animation.FuncAnimation(fig, animate, frames=len(frames), interval=200, blit=True)
+    
+    if save_path:
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        # Save the animation
+        anim.save(save_path, writer='ffmpeg', fps=5)
+    
+    plt.close(fig)
+    return HTML(anim.to_jshtml())
