@@ -2,11 +2,7 @@
 
 ## Project Overview
 
-This project investigates methods to improve the generalization capabilities of Deep Reinforcement Learning (RL) agents, specifically their ability to adapt to environments visually transformed in ways not seen during training. We developed and evaluated a $C_4$-equivariant convolutional neural network that inherently understands rotational symmetry. The key result is that this equivariant agent demonstrated robust zero-shot generalization to unseen spatial rotations of its environment, significantly outperforming standard convolutional architectures and data augmentation techniques under the same conditions.
-
-## Background: The Generalization Problem in RL
-
-Deep RL agents often exhibit a tendency to overfit to the specific characteristics of their training environments. This limits their performance when deployed in new or slightly modified situations, a common challenge in real-world applications. Improving generalization typically requires agents to learn more robust representations that are invariant or equivariant to irrelevant transformations in the environment.
+This project investigates methods to improve the generalization capabilities of Deep Reinforcement Learning (RL) agents, specifically their ability to adapt to environments visually transformed in ways not seen during training. We developed and evaluated a $C_4$-equivariant convolutional neural network. The key result is that this equivariant agent demonstrated robust zero-shot generalization to unseen spatial rotations of its environment, significantly outperforming standard convolutional architectures and data augmentation techniques under the same conditions.
 
 ## Experimental Setup
 
